@@ -1,0 +1,43 @@
+name: Build Pico2 ROM Emulator
+
+on:
+  push:
+    branches: [ "32KB", "main", "master" ]
+  pull_request:
+    branches: [ "32KB", "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Install Dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y gcc-arm-none-eabi libnewlib-arm-none-eabi build-essential cmake
+
+    - name: Fetch Pico SDK
+      run: |
+        git clone -b master https://github.com/raspberrypi/pico-sdk.git
+        cd pico-sdk
+        git submodule update --init
+        echo "PICO_SDK_PATH=$PWD" >> $GITHUB_ENV
+
+    - name: Build project
+      run: |
+        mkdir build
+        cd build
+        cmake -DPICO_BOARD=pico2 ..
+        make -j$(nproc)
+
+    - name: Upload build artifact (.uf2)
+      uses: actions/upload-artifact@v4
+      with:
+        name: pico2-rom-emu-firmware
+        path: build/*.uf2
