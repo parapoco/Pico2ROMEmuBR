@@ -147,7 +147,6 @@ __attribute__((noinline)) int __time_critical_func(main)(void) {
     // [Enter]入力を待たなくした
     
     printf("Pico2 ROMエミュレータ(32KByte)のテスト開始...\n");
-        }
     }
     printf("\nPico2 システムクロック(1.3V) - %dMHz\n", sysclk / 1000);
     printf("リセット出力状態 - ON\n");
