@@ -144,6 +144,7 @@ __attribute__((noinline)) int __time_critical_func(main)(void) {
     pio_sm_set_enabled(pio, sm1, true);
     init_rom_basic_code(); // rom_basic_const.cから初期化
     sleep_ms(3000); // 3秒待機
+    /*
     // [Enter]入力を待つ
     printf("\n[Enter] を押すとPico2 ROMエミュレータ(32KByte)のテスト開始します...\n");
     while (true) {
@@ -153,6 +154,8 @@ __attribute__((noinline)) int __time_critical_func(main)(void) {
             break;
         }
     }
+    */
+    printf("Pico2 ROMエミュレータ(32KByte)のテスト開始...\n");
     printf("\nPico2 システムクロック(1.3V) - %dMHz\n", sysclk / 1000);
     printf("リセット出力状態 - ON\n");
     printf("クロック出力(20MHz) 10MHz:9600bps - ON\n");
