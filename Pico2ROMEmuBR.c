@@ -71,15 +71,20 @@ __attribute__((noinline)) int __time_critical_func(main)(void) {
     set_qspi_clock_divider(sysclk, 133000); // QSPIクロックを133MHz以下に
 
     stdio_init_all();
-    setbuf(stdout, NULL);           // 標準出力のバッファリングを無効化 
+    setbuf(stdout, NULL);                   // 標準出力のバッファリングを無効化 
 
     // UART0の初期化
     uart_init(UART_ID, BAUD_RATE);
-    // UARTピンの設定（GPIO0=TX, GPIO1=RX）
     gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART);
     gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART);
 
-    // --- [修正位置 A] PIOプログラムをロード・初期化する前にクリアする -----------------------------------
+    // =======================================================
+    // 【追加・修正】先に sm1 と sm2 の数値を決めておく
+    // =======================================================
+    uint sm1 = 1;
+    uint sm2 = 2;
+
+    // --- [修正位置 A] PIOプログラムをロード・初期化する前にクリア ---
     pio_sm_restart(pio, sm);
     pio_sm_clear_fifos(pio, sm);
     pio_sm_restart(pio, sm1);
@@ -87,15 +92,16 @@ __attribute__((noinline)) int __time_critical_func(main)(void) {
     pio_sm_restart(pio, sm2);
     pio_sm_clear_fifos(pio, sm2);
 
-    // PIO初期化-------------------------------------------------------------------------------------
+
+    // =======================================================
+    // ここから通常のPIO初期化処理
+    // =======================================================
     uint offset = pio_add_program(pio, &oe_address_control_program);
     pio_sm_config c = oe_address_control_program_get_default_config(offset);
 
-    uint sm1 = 1; // sm1を使用
     uint offset1 = pio_add_program(pio, &clk_out_program);
     pio_sm_config c1 = clk_out_program_get_default_config(offset1);
- 
-    uint sm2 = 2; // sm2を使用
+
     uint offset2 = pio_add_program(pio, &reset_out_program);
     pio_sm_config c2 = reset_out_program_get_default_config(offset2);
 
@@ -103,6 +109,9 @@ __attribute__((noinline)) int __time_critical_func(main)(void) {
     for (int i = 0; i < 8; i++) {
         pio_gpio_init(pio, DATA_PINS_BASE + i);
     }
+    
+    // (以降、元のコードの続きへ...)
+
     // GP8-22：入力(13ピン A0-A14)
     for (int i = 0; i < 15; i++) {
         pio_gpio_init(pio, ADDR_PINS_BASE + i);
