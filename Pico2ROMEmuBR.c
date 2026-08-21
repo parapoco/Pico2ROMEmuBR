@@ -51,9 +51,9 @@ __attribute__((noinline)) void __time_critical_func(core1_entry)(void) {
 // rom_saki80mon041[]をrom_data[]にコピーする初期化ルーチン
 void init_rom_basic_code(void) {
     // z80_binary[]の内容をrom_data[]の先頭にコピー
-    memcpy(rom_data, rom_saki80mon041, sizeof(rom_saki80mon041));
+    memcpy(rom_data, rom_basic, sizeof(rom_basic));
     // 残りのrom[]を0xFFで埋める（8Kバイトまで）
-    memset(rom_data + sizeof(rom_saki80mon041), 0xFF, ROM_SIZE - sizeof(rom_saki80mon041));
+    memset(rom_data + sizeof(rom_basic), 0xFF, ROM_SIZE - sizeof(rom_basic));
 }
 
 
