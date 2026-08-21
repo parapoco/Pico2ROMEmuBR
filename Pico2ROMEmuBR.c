@@ -160,7 +160,7 @@ __attribute__((noinline)) int __time_critical_func(main)(void) {
     pio_sm_init(pio, sm1, offset1, &c1);
     pio_sm_set_enabled(pio, sm1, true);
     init_rom_basic_code(); // rom_basic_const.cから初期化
-    sleep_ms(1000); // 3秒待機 1秒に変更
+    sleep_ms(3000); // 3秒待機 1秒に変更
     /*
     // [Enter]入力を待つ
     printf("\n[Enter] を押すとPico2 ROMエミュレータ(32KByte)のテスト開始します...\n");
