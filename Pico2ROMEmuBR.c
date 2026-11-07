@@ -163,14 +163,7 @@ __attribute__((noinline)) int __time_critical_func(main)(void) {
     sleep_ms(5000); // 3秒待機 1秒に変更
     /*
     // [Enter]入力を待つ
-    printf("\n[Enter] を押すとPico2 ROMエミュレータ(32KByte)のテスト開始します...\n");
-    while (true) {
-        int c = getchar_timeout_us(100000); // 100msタイムアウト
-        if (c == '\r') { // [Enter]（CR）が入力されたら開始
-            printf("Pico2 ROMエミュレータ(32KByte)のテスト開始...\n");
-            break;
-        }
-    }
+  
     */
     printf("Pico2 ROMエミュレータ(32KByte)のテスト開始...\n");
     printf("\nPico2 システムクロック(1.3V) - %dMHz\n", sysclk / 1000);
